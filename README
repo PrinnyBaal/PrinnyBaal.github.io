@@ -1,0 +1,12 @@
+In my tabltetop games I like playing bards and spellcasters who buff themselves/others in martial combat but it was taking way too much time to track all of the stat changes and figure out what stacked. This tracks buffs and penalties to to-hit and damage and orginally looked like a spreadsheet, wanted to try making it pretty and user-friendly enough to share with other players via git-pages. It's my first 'real' project and attempt to make use of git that I hoped to be helpful for anyone but myself. Any and all advice would be well appreciated.
+
+
+Assuming everything is working correctly you should be able to access it on: https://prinnybaal.github.io./
+Failing that you can download the files and drag the index file into a browser.  
+
+
+This has been tested in the following browsers without any bugs that I personally noticed but only Firefox has been given more than a cursory check so far.:
+
+  Firefox (latest version)
+  IE (latest version)
+  Chrome (latest version)
