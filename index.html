@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Stat Tracker</title>
+  <script src="src/ctrl/initialize.js"></script>
+  <script src="src/model/diceStats.js"></script>
+  <script src="src/view/diceMath.js"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script>
+   window.addEventListener( "load", diceProj.view.diceMath.setupUserInterface);
+  </script>
+</head>
+
+<style>
+
+/* https://css-tricks.com/snippets/css/ribbon/ */
+
+/* Character Portrait */
+/* ---------------------------------------------- */
+.ribbon {
+ background: #ba89b6;
+ color: #fff;
+
+}
+.ribbon:before, .ribbon:after {
+ content: "";
+ position: absolute;
+ display: block;
+ bottom: -1em;
+ border: 1.5em solid #986794;
+ z-index: -1;
+ bottom:.5em;
+}
+.ribbon:before {
+  left: -2em;
+  border-right-width: 1.5em;
+  border-left-color: transparent;
+
+}
+.ribbon:after {
+ right: -2em;
+ border-left-width: 1.5em;
+ border-right-color: transparent;
+}
+.ribbon .ribbon-content:before, .ribbon .ribbon-content:after {
+ content: "";
+ position: absolute;
+ border-style: solid;
+ border-color: #804f7c transparent transparent transparent;
+ bottom: -1em;
+}
+
+
+/* Global */
+/* ---------------------------------------------- */
+body{
+  background-image:url('https://res.cloudinary.com/metaverse/image/upload/v1538592070/Backgrounds/tileable_wood_texture.png');
+  font-family: Georgia, serif;
+  /* font-family:"Old Standard"; */
+}
+ul {
+  list-style: none;
+}
+.h-20{
+  height:20% !important;
+}
+.h-60{
+  height:60% !important;
+}
+#myCanvas{
+  position:absolute;
+  visibility:hidden;
+}
+#mainContainer{
+  height:100vh;
+}
+button:hover{
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  cursor:pointer;
+}
+button:active{
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  cursor:pointer;
+}
+
+/* General Palette */
+/* ---------------------------------------------- */
+.styledForm{
+   background-color:transparent;
+   line-height:2em;
+   box-shadow: inset 2px 2px 1px rgba(255, 255, 255, .4), inset -2px -2px 1px rgba(0, 0, 0, .4);
+   border-style: solid;
+   border-color:silver;
+   border-width: medium;
+   background-color:black;
+   background-image:url("https://res.cloudinary.com/metaverse/image/upload/v1533578530/Backgrounds/ep_naturalblack.png");
+   color:white;
+   font-size:1.75vw;
+   font-family: Georgia, serif;
+   height:100%;
+   border-right:0;
+ }
+
+ .styledForm:hover{
+   box-shadow: inset 2px 2px 3px rgba(0, 0, 0, .7), inset -2px -2px 3px rgba(0, 0, 0, .7);
+ }
+ .charSquare{
+   border:solid;
+   border-color:#461F00;
+   background-color:#8C6546;
+   border-radius:1%;
+ }
+ .charSquare:hover{
+   box-shadow: inset 4px 4px 4px rgba(255, 255, 255, .4), inset -2px -2px 2px rgba(0, 0, 0, .4);
+ }
+ .charSquare:active{
+   background-color:white;
+ }
+ .byFiveMisc{
+   background-color:#461F00;
+ }
+ .darkWoodBtn{
+   background-color:#461F00;
+   color:white;
+ }
+ .byOneMisc{
+   background-color:#8C6546;
+ }
+ .button {
+    border-top: 1px solid #000000;
+    background: #040e14;
+    background-image: linear-gradient(to bottom, #8b4bab, #040e14);
+    padding: 9px 18px;
+    border-radius: 8px;
+    box-shadow: rgba(0,0,0,1) 0 1px 0;
+    text-shadow: rgba(0,0,0,.4) 0 1px 0;
+    color: white;
+    font-size: 13px;
+    font-family: Georgia, serif;
+    text-decoration: none;
+    vertical-align: middle;
+    }
+    .button:hover {
+    border-top-color: #590759;
+    background: #590759;
+    color: #ccc;
+    }
+    .button:active {
+    border-top-color: #1b435e;
+    background: #1b435e;
+    }
+
+    .buttonNegative {
+     border-top: 1px solid #000000;
+     background: #040e14;
+     background-image: linear-gradient(to bottom, #E34234, #040e14);
+     padding: 9px 18px;
+     border-radius: 8px;
+     box-shadow: rgba(0,0,0,1) 0 1px 0;
+     text-shadow: rgba(0,0,0,.4) 0 1px 0;
+     color: white;
+     font-size: 13px;
+     font-family: Georgia, serif;
+     text-decoration: none;
+     vertical-align: middle;
+     }
+  .buttonNegative:hover {
+     border-top-color: #E34234;
+     background: #E34234;
+     color: #ccc;
+     }
+  .buttonNegative:active {
+     border-top-color: #1b435e;
+     background: #1b435e;
+     }
+
+   .smallButton {
+      border-top: 1px solid #000000;
+      background: #040e14;
+      background-image: linear-gradient(to bottom, #8b4bab, #040e14);
+      padding: 1px 2px;
+      border-radius: 8px;
+      box-shadow: rgba(0,0,0,1) 0 1px 0;
+      text-shadow: rgba(0,0,0,.4) 0 1px 0;
+      color: white;
+      font-size: .6em;
+      font-family: Georgia, serif;
+      text-decoration: none;
+      vertical-align: middle;
+      }
+   .smallButton:hover {
+      border-top-color: #E34234;
+      background: #E34234;
+      color: #ccc;
+      }
+   .smallButton:active {
+      border-top-color: #1b435e;
+      background: #1b435e;
+      }
+/* Section assortment */
+/* ---------------------------------------------- */
+#headingRow{
+  height:15vh;
+  line-height:14vh;
+  font-size:3vw;
+  margin-top:2vh;
+
+}
+#feedbackRow{
+  height:45vh;
+  margin-top:3vh;
+}
+#setupRow{
+  height:30vh;
+  margin-top:2vh;
+}
+/* Character Sheet, body */
+/* ---------------------------------------------- */
+#activeSheet{
+  background-image:url("https://res.cloudinary.com/metaverse/image/upload/v1538607257/Backgrounds/No%20Attribution/old_paper_2_by_edgelight-d8zx7kf.jpg");
+  background-size:cover;
+  cursor:default;
+}
+#activeSheet *{
+  direction:ltr;
+}
+.imgChoice{
+  cursor:pointer;
+}
+
+/*  Character Sheet, Navigation*/
+/* ---------------------------------------------- */
+#sheetTabs{
+  cursor:default;
+  background-image: repeating-linear-gradient(  90deg,
+   #a7834b,
+   #a7834b 1px,
+   #d6c3a4 1px,
+   #d6c3a4 10px);
+}
+.ribbonBtn{
+  font-size:1.1vw;
+  padding:0;
+  word-wrap: break-word;
+  transition-duration:.25s;
+  border:0;
+  box-shadow: inset -2px 2px 0px 0px #DAA520;
+  background-color:#86242a;
+
+}
+
+/* Title */
+/* ---------------------------------------------- */
+#titleBanner{
+  border-radius:2%;
+  border:5px solid;
+  background-color:white;
+  height:100%;
+  text-align:center;
+  cursor:pointer;}
+
+  #titleBanner:hover{background-color:grey;}
+
+  #titleBanner:active{background-color:black;}
+
+/*  GemTray*/
+/* ---------------------------------------------- */
+#gemTray{
+  border-style:solid;
+  border-width:thin;
+  border: 7px solid transparent;
+  border-image: url("https://res.cloudinary.com/metaverse/image/upload/v1533578530/Backgrounds/ep_naturalblack.png") 30 round;
+  overflow:hidden;
+  height:100%;
+  box-shadow: 10px 10px 5px grey;
+}
+.trayButton{
+  border-style: solid;
+  border-color:silver;
+  border-width: thin;
+  box-shadow: inset 2px 2px 1px rgba(255, 255, 255, .4), inset -2px -2px 1px rgba(0, 0, 0, .4);
+  cursor:pointer;
+}
+.trayButton:hover{
+  box-shadow: inset 2px 2px 10px rgba(0, 0, 0, .8)
+}
+.trayButton:active{
+  box-shadow:inset 25px 25px 20px rgba(255, 255, 255, .6);
+  cursor:pointer;
+}
+#uptickBuffTray{
+  background-image:url('https://res.cloudinary.com/metaverse/image/upload/v1538505202/DiceTray/UI%20Icons/icons8-chevron-up-50.png');
+  background-size: 90% 80%;
+  background-repeat:no-repeat;
+  background-color:#461F00;
+}
+#uptickNerfTray{
+  background-image:url('https://res.cloudinary.com/metaverse/image/upload/v1538505202/DiceTray/UI%20Icons/icons8-chevron-up-50.png');
+  background-size: 90% 80%;
+  background-repeat:no-repeat;
+  background-color:#461F00;
+}
+#downtickBuffTray{
+  background-image:url('https://res.cloudinary.com/metaverse/image/upload/a_180/v1538505202/DiceTray/UI%20Icons/icons8-chevron-up-50.png');
+  background-size: 90% 80%;
+  background-repeat:no-repeat;
+  background-color:#8C6546;
+}
+#downtickNerfTray{
+  background-image:url('https://res.cloudinary.com/metaverse/image/upload/a_180/v1538505202/DiceTray/UI%20Icons/icons8-chevron-up-50.png');
+  background-size: 90% 80%;
+  background-repeat:no-repeat;
+  background-color:#8C6546;
+}
+.gemLine{
+  /* border-style:solid;
+  border-width:thin; */
+  background-color:pink;
+  height:50%;
+  /* overflow:hidden; */
+}
+.traySlot{
+  border-style:solid;
+  border-width:thin;
+  border-color:silver;
+  background-image:url('https://res.cloudinary.com/metaverse/image/upload/v1538335141/Backgrounds/freepik/719.jpg');
+  background-size: cover;
+  box-shadow: 5px 8px 20px 10px #888888 inset;
+  height:100%;
+  padding:0;
+  }
+#miscMod{
+  border-style:solid;
+  border-width:thin;
+  border: 7px solid transparent;
+  border-image: url("https://res.cloudinary.com/metaverse/image/upload/v1533578530/Backgrounds/ep_naturalblack.png") 30 round;
+
+  border-left:0;
+  height:100%;
+  overflow:hidden;
+  box-shadow: 10px 10px 5px grey;
+  cursor:default;}
+  #currMisc{
+    font-size:5vw;
+    display:block;
+    background-color:#eeeeee;
+    background-image:url('https://res.cloudinary.com/metaverse/image/upload/v1538327689/Backgrounds/ricepaper2__2X.png');
+    margin-left:auto;
+    margin-right:auto;
+    bottom:0;
+    line-height:100%;
+    overflow:hidden;
+
+  }
+  #buffTrayName{
+    background-color:green;
+    height:100%;
+    width:100%;
+
+  }
+
+/*  Lapidary*/
+/* ---------------------------------------------- */
+#lapidary{
+    overflow:hidden;
+    height:100%;
+    background-image:url("https://res.cloudinary.com/metaverse/image/upload/v1538334861/Backgrounds/No%20Attribution/velvet-2683937_1920.jpg");
+    background-size: cover;
+    direction: rtl;
+    border-radius:1%;
+    margin-left:.5vw;
+    border: 7px solid transparent;
+    border-image: url("https://res.cloudinary.com/metaverse/image/upload/v1538334861/Backgrounds/No%20Attribution/velvet-2683937_1920.jpg") 30 round;
+    box-shadow: 10px 10px 5px grey;
+  }
+#lapidary:hover{
+    overflow:auto;
+  }
+  .lapidarySlot{
+    background-image:url("https://res.cloudinary.com/metaverse/image/upload/v1538334861/Backgrounds/No%20Attribution/velvet-2683937_1920.jpg");
+    background-size: cover;
+    box-shadow: 2px 4px 10px 5px #1E021E inset;
+    border-style:solid;
+    border-width:thin;
+    height:100px;
+    padding:0;
+  }
+  .lapWrapper{
+    height:100%;
+    width:100%;
+    cursor:grab;
+  }
+  .lapWrapper:active{cursor:grabbing;}
+
+/*  Incenerator*/
+/* ---------------------------------------------- */
+.trashSlot{
+  background-image:url("https://res.cloudinary.com/metaverse/image/upload/v1533578530/Backgrounds/ep_naturalblack.png");
+
+  background-size: cover;
+  box-shadow: 2px 4px 10px 5px #010101 inset;
+  border-style:solid;
+  border-width:thin;
+  height:100px;
+  padding:0;
+}
+  #trashTray{
+    background-image:url("https://res.cloudinary.com/metaverse/image/upload/v1533578351/Backgrounds/stardust.png");
+    background-size: cover;
+    direction: rtl;
+    overflow:hidden;
+    margin:0vw 1vw .5vw .5vw;
+    border-radius:3%;
+    height:100%;
+    border: 7px solid transparent;
+    border-image: url("https://res.cloudinary.com/metaverse/image/upload/v1533578351/Backgrounds/stardust.png") 30 round;
+    box-shadow: 10px 10px 5px grey;
+  }
+  #trashTray:hover{
+    overflow:auto;
+  }
+
+/*  Display*/
+/* ---------------------------------------------- */
+#infoSlot{
+  height:100%;
+  overflow:hidden;
+  background-image:url("https://res.cloudinary.com/metaverse/image/upload/v1538519297/Backgrounds/No%20Attribution/grungy_paper_texture_v_15_by_bashcorpo-d7s770b.jpg");
+  background-size: 100% 100%;
+  margin-top:.5vw;
+}
+#infoSlot:hover{
+  overflow-y:auto;
+  overflow-x:hidden;
+  box-shadow: 10px 10px 5px grey;
+}
+
+/*  Dice-roller*/
+/* ---------------------------------------------- */
+#dieSlot{
+  margin-top:-.25vw;
+  background-image:url("https://res.cloudinary.com/metaverse/image/upload/v1538519779/Backgrounds/No%20Attribution/grungy_paper_texture_v_13_by_bashcorpo.png");
+  background-size: 100% 100%;
+  height:100%;
+}
+  #dieSlot:hover{
+    box-shadow: 10px 10px 5px grey;
+  }
+
+  #die{
+    background-image:url('https://res.cloudinary.com/metaverse/image/upload/v1538584304/Backgrounds/No%20Attribution/transparent-background-math.gif');
+    background-size:cover;
+    border-radius:50%;
+    height:50%;
+    width:100%;
+    cursor:pointer;
+  }
+  #die:hover{
+    box-shadow: inset 2px 2px 10px rgba(0, 0, 0, .8);
+  }
+  #die:active{
+    box-shadow:inset 25px 25px 20px rgba(255, 255, 255, .6)
+
+  }
+/*  results*/
+/* ---------------------------------------------- */
+  #resultBox{
+    margin-top:.25vw;
+    height:100%;
+    background-image:url("https://res.cloudinary.com/metaverse/image/upload/v1538518854/Backgrounds/No%20Attribution/paper_texture_v2_by_bashcorpo.png");
+    background-size: 100% 100%;
+  }
+  #resultBox:hover{
+    box-shadow: 10px 10px 5px grey;
+  }
+
+  /*  gems general*/
+  /* ---------------------------------------------- */
+  .itemImage{
+    object-fit:fill;
+    height:100%;
+    width:100%;
+    cursor:grab;
+  }
+  .imageShadow{
+    width: 100%;
+    height: 100%;
+    box-shadow: 0px 0px 20px 5px #0d0d0d inset;
+    position:absolute;
+    top:0;
+    left:0;
+  }
+
+  .wrapper{
+    height:100%;
+    width:100%;
+    cursor:grab;
+  }
+  .wrapper:active{
+    cursor:grabbing;
+  }
+
+  /*  char Portrait*/
+  /* ---------------------------------------------- */
+  #charPortrait{
+    border-style:solid;
+    border-width:thick;
+    border-color:#461F00;
+    border-radius:50%;
+    background-color:silver;
+    background-image:url('https://res.cloudinary.com/metaverse/image/upload/v1538335141/Backgrounds/freepik/719.jpg');
+    height:100%;
+    margin-left:6vw;
+    cursor:pointer;
+  }
+
+    #charPortrait:hover{
+      box-shadow: inset 2px 2px 10px rgba(0, 0, 0, .8);
+    }
+
+    #charPortrait:active{
+      box-shadow: inset 8px 8px 20px rgba(0, 0, 0, 1);
+    }
+  #charNamePlate{
+    position:absolute !important;
+    bottom:-13% !important;
+    left:15% !important;
+    /* height:20% !important; */
+    width:70% !important;
+    text-align:center !important;
+    font-size:1.25vw !important;
+  }
+
+/* Tool-tips*/
+/* ---------------------------------------------- */
+.formtip {
+  position: relative;
+}
+.formtip .formtipText {
+    visibility: hidden;
+    width: 240px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    right: 105%;
+}
+.formtip:hover .formtipText {
+    visibility: visible;
+}
+.formTitle{
+  font-size:1.5em;
+  font-weight: bold;
+}
+.hiddenInfo{
+  /*  This hides the element when we don't need it by giving it a scale of 0 and positioning it absolutely!*/
+  position:absolute;
+  /* transform: scale(0); */
+  /* z-index:-1; */
+  opacity:0;
+  z-index:-1 !important;
+  /* transition: opacity .25s ease-in-out; */
+  /* transition: opacity .25s ease-in-out; */
+
+}
+.tooltipOverlay{
+  position:absolute;
+  background-color:black;
+  height:100%;
+  width:100%;
+  z-index:1;
+  color:white;
+  transition: .20s ease-in-out;
+  word-wrap:break-word;
+  overflow:hidden;
+}
+
+/* Overlay Effect*/
+/* ---------------------------------------------- */
+    .overlay {
+      position: fixed; /* Sit on top of the page content */
+      display: none;/*  Hidden by default  */
+      width: 100%; /* Full width (cover the whole page) */
+      height: 100%; /* Full height (cover the whole page) */
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+      z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+      cursor: pointer; /* Add a pointer on hover */
+      overflow:auto;
+      }
+
+/* Gem-maker Form*/
+/* ---------------------------------------------- */
+    #buildAGemForm{
+      background-image: url('https://res.cloudinary.com/metaverse/image/upload/v1533578215/Backgrounds/ep_naturalwhite.png');
+      border-radius: 10px     10px      0           0;
+    }
+    #gemDropdown{
+      transition:1.5s;
+      font-size: 2em;
+    }
+    .flipped{
+      -moz-transform: scaleY(-1);
+      -o-transform: scaleY(-1);
+      -webkit-transform: scaleY(-1);
+      transform: scaleY(-1);
+      filter: FlipV;
+      -ms-filter: "FlipV";
+      transition:1.5s;
+    }
+    .hidden{
+      /*  This hides the element when we don't need it by giving it a scale of 0 and positioning it absolutely!*/
+      position:absolute;
+      transform: scale(0);
+      transition: transform .4s cubic-bezier(.5,0,.3,1);
+    }
+    .hidable{
+      transition: transform .4s cubic-bezier(.5,0,.3,1);
+    }
+
+
+
+</style>
+
+<body>
+  <canvas id="myCanvas" width="1000" height="200"></canvas>
+  <div id="mainContainer" class="container-fluid">
+
+    <div id="headingRow" class="row">
+      <div id="titleBanner" class="offset-4 col-4"></div>
+    </div>
+
+    <div id="feedbackRow" class="row" >
+      <!-- Lap is populated via JS A scrollable segment with slots containing various "gems", at the bottom a button to let the user create a gem -->
+      <div id="lapidary" class="col-2 container-fluid"></div>
+
+      <div id="infoSlot" class="offset-1 col-2 container-fluid">
+        <div class="row container-fluid hiddenInfo tooltipOverlay" style="font-size:1vw;">
+          <div class="row">
+            <div id="tooltipName" class="col-6"></div>
+            <div id="tooltipType" class="col-6"></div>
+          </div>
+          <div class="row">
+            <div id="tooltipAtk" class="col-6"></div>
+            <div id="tooltipDmg" class="col-6"></div>
+          </div>
+          <div class="row">
+            <div id="tooltipStatsPhys" class="col"></div>
+          </div>
+          <div class="row">
+            <div id="tooltipStatsMent" class="col"></div>
+          </div>
+        </div>
+
+        <div id="modInfo" class="row mt-4 ml-1" ></div>
+        <hr>
+        <div id="conditionalInfo" class="row justify-content-center h-50" style=" position:relative;">
+          <form id="targetConditionalForm" class="col-10 offset-1 container-fluid" onsubmit="event.preventDefault(); displayMod();">
+            <div  id="conditionalForm">
+            </div>
+            <!-- https://stackoverflow.com/questions/11599666/get-the-value-of-checked-checkbox -->
+            <div class="row justify-content-center align-items-end h-25">
+              <button class="smallButton col-5 hidden mr-1" type="submit" id="submitConditionals">Apply Selected</button>
+              <button class="smallButton col-5 " type="button" onclick="displayConditionals();" id="updateConditionalsBtn">Update Display</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="offset-1 col-2 container-fluid">
+        <div class="row container-fluid hiddenInfo tooltipOverlay" style="font-size:1vw;">
+
+          <div class="row" style="width:100%;">
+            <div id="tooltipDesc" style="overflow-wrap: break-word;" class="col"></div>
+          </div>
+
+          <div class="row" style="width:100%; overflow:hidden;">
+            <div id="tooltipTrigger" style="overflow-wrap: break-word;" class="col"></div>
+          </div>
+
+        </div>
+
+        <div  id="dieSlot"  class="row container align-items-center no-gutters">
+          <p>Simulate Results</p>
+          <div id="die" class="col-8 offset-2">
+
+            <img  class="pl-4 pt-4" height="80%" width="80%" src="https://res.cloudinary.com/metaverse/image/upload/v1538581612/Backgrounds/No%20Attribution/d20-2699387_640.png">
+          </div>
+
+        </div>
+
+    </div>
+
+    <div  id="resultBox" class="offset-1 col-2 container-fluid">
+      <div class="row container-fluid hiddenInfo tooltipOverlay" style="font-size:1vw;">
+
+        <div class="row" style="width:100%;">
+          <div id="tooltipHitType" style="overflow-wrap: break-word;" class="col"></div>
+        </div>
+
+        <div class="row" style="width:100%; overflow:hidden;">
+          <div id="tooltipStatType" style="overflow-wrap: break-word;" class="col"></div>
+        </div>
+
+        <div class="row" style="width:100%; overflow:hidden;">
+          <div id="tooltipDamType" style="overflow-wrap: break-word;" class="col"></div>
+        </div>
+
+      </div>
+      <div  class="row no-gutters mt-4">
+        <div id="resultNum" class="col offset-1">Result: 20</div>
+        <div id="dieNum" class="col offset-1">D20 roll: 13</div>
+      </div>
+      <hr>
+      <div class="row">
+        <div id="dmgResult" class="col offset-3">Damage: Hopefully lots </div>
+      </div>
+    </div>
+
+  </div>
+
+    <div id="setupRow" class="row">
+      <div id="trashTray" class="col-2"></div>
+      <div id="gemTray" class="col-6 container-fluid no-gutters">
+        <div class="gemLine row" >
+          <div id="buffTrayPlate" class="col container" style="background-color:red;">
+            <!-- <div class="col-10 h-100"></div> -->
+            <div class="row h-100" >
+              <div id="buffTrayName" class="col-10 h-100 " style="background-color:gold; padding:0;" >
+
+                <input class="col form-control styledForm align-self-center h-100" type="text" name="standIn" id="buffTrayNameForm" onChange="trayNameChange(event)" value="???">
+
+              </div>
+              <div class="col-2 h-100 container-fluid" style="background-color:white; padding:0;">
+                <div id="uptickBuffTray" class="col-12 h-50 trayButton"></div>
+                <div id="downtickBuffTray"class="col-12 h-50 trayButton"></div>
+              </div>
+            </div>
+          </div>
+          <div id="buff1" class="traySlot col" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div id="buff2" class="traySlot col" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div id="buff3" class="traySlot col" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div id="buff4" class="traySlot col" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div id="buff5" class="traySlot col" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        </div>
+        <div class="gemLine row">
+          <div id="nerfTrayPlate" class="col container" style="background-color:red;">
+            <div class="row h-100" >
+              <div id="nerfTrayName" class="col-10 h-100 " style="background-color:gold; padding:0;" >
+                <input class="col form-control styledForm align-self-center h-100" type="text" name="standIn" id="nerfTrayNameForm" onChange="trayNameChange(event)" value="???">
+              </div>
+              <div class="col-2 h-100 container-fluid" style="background-color:white; padding:0;">
+                <div id="uptickNerfTray" class="col-12 h-50 trayButton"></div>
+                <div id="downtickNerfTray"class="col-12 h-50 trayButton"></div>
+              </div>
+            </div>
+          </div>
+          <div id="nerf1" class="traySlot col" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div id="nerf2" class="traySlot col" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div id="nerf3" class="traySlot col" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div id="nerf4" class="traySlot col" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+          <div id="nerf5" class="traySlot col" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        </div>
+      </div>
+
+      <div id="miscMod" class="col-1 container-fluid p-0 no-gutters">
+        <div class="row h-20">
+         <button id="raiseMiscMod" class="col byOneMisc trayButton">+1</button>
+         <button id="raiseMiscMod5" class="col byFiveMisc trayButton">+5</button>
+        </div>
+        <div id="currMisc" class="row h-60" style="text-align: center">
+        </div>
+        <div  class="row h-20">
+          <button id="lowerMiscMod" class="col byOneMisc trayButton">-1</button>
+          <button id="lowerMiscMod5" class="col byFiveMisc trayButton">-5</button>
+        </div>
+      </div>
+      <div id="charPortrait" class= "col-2" >
+        <img class="charImg" id="charPortraitImg" src="" style="height:100%; width:100%;" alt="No Avatar Selected, Click me to open Character Sheet">
+        <div class="ribbon" id="charNamePlate">
+          <div class="ribbon-content">NameBoo</div>
+        </div>
+        <!-- <div id="charNamePlate"></div> -->
+      </div>
+
+<button id="resetButton" style="background-color:red;">Click to Reset all data</button>
+
+<!--  charOverlay creating code-->
+<div id="charOverlay" class="overlay container-fluid">
+  <div id="charSheetWhole" class="row justify-content-center container-fluid mt-1" style="height:100%; width:100%;">
+    <div id="activeSheet" class="col-9" style="background-color:pink; overflow:auto; height:100%; direction:rtl;"></div>
+    <div id="sheetTabs" class="col-1 pt-4 container-fluid no-gutters">
+      <div class="row pl-1"><button class="mt-4 col-6 ribbonBtn" id="artPageButton">Name & Art</button></div>
+      <div class="row"><button class="mt-4 col-6 offset-1 ribbonBtn" id="statsPageButton">Stats</button></div>
+      <div class="row"><button class="mt-4 col-6 offset-2 ribbonBtn" id="attacksPageButton">Attacks</button></div>
+      <div class="row"><button class="mt-4 col-6 offset-3 ribbonBtn" id="creditsPageButton">Credits</button></div>
+      <div class="row"><button class="mt-4 col-6 offset-4 ribbonBtn" id="exitPageButton">Close Sheet</button></div>
+
+
+
+
+    </div>
+  </div>
+</div>
+<!--end of charOverlay code-->
+
+<!--  gemOverlay creating code-->
+
+<div id="gemOverlay" class="overlay container-fluid">
+   <div class="row justify-content-center container-fluid">
+     <!-- http://javascript-coder.com/javascript-form/javascript-get-check.phtml -->
+     <form class="col-6 needsValidation  mt-4" id="buildAGemForm" onsubmit="event.preventDefault(); newGemSubmit(event);">
+       <span class="formTitle">Gem Creator:</span>
+       <div class="form-group row  mt-4 formtip">
+         <span class="formtipText">"Gem" is just shorthand for the effect whose modifiers you want to apply to your attack.</span>
+         <label for="nameEntry" class="col-sm-2 col-form-label" >Gem Name*:</label>
+         <div class="col-sm-10">
+           <input type="text" class="form-control" id="nameEntry" placeholder="Sickened" name="nameEntry" required>
+         </div>
+       </div>
+
+       <fieldset class="form-group">
+         <div class="row">
+          <legend class="col-form-label col-sm-2 pt-0">Gem Type*:</legend>
+          <div class="col-sm-10">
+
+            <div class="form-check">
+              <input class="form-check-input formChangers" type="radio" name="typeEntries" id="typeEntry1" value="static" required>
+              <label class="form-check-label formtip" for="typeEntry1">
+                <span class="formtipText">Static gems are always in effect once slotted.  They do not have an entry for variable bonuses to-hit.  Most of the time these will do the job just fine. </span>
+                Static (Has a straightforward to-hit modifier that doesn't have any variance.)
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input formChangers" type="radio" name="typeEntries" id="typeEntry2" value="variable" required>
+              <label class="formtip form-check-label" for="typeEntry2">
+                <span class="formtipText">Variable gems are always in effect once slotted.  They do not have an entry for static bonuses to-hit.  Use for these is likely a bit rare.</span>
+                Variable (Has a to-hit modifier with a value that varies from moment to moment)
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input formChangers" type="radio" name="typeEntries" id="typeEntry3" value="conditional" required>
+              <label class="form-check-label formtip" for="typeEntry3">
+                <span class="formtipText">These don't affect anything once slotted, instead they are toggled on or off after being slotted.  They have all entries available, so if the other two aren't working this one will.</span>
+                Conditional (Has a modifier with a value that only applies if certain conditions are met)
+              </label>
+            </div>
+
+          </div>
+
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <div class="row formtip">
+          <span class="formtipText">This choice is purely aesthetic.  Gems created if you select Boon will be green and gems created if you select Bane will be red.  It's a handy way of color-coding your gems so you can tell them apart at a glance!</span>
+          <legend class="col-form-label col-sm-2 pt-0">Boon or Bane</legend>
+          <div class="col-sm-10">
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="effectEntries" id="effectEntry1" value="boon" checked>
+              <label class="form-check-label" for="effectEntry1">
+                Beneficial (whatever this gem does, it's all good or at least the penalties don't matter!)
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="effectEntries" id="effectEntry2" value="bane">
+              <label class="form-check-label" for="effectEntry2">
+                Bane (whatever this gem does, you don't like any of it or at least any benefits it does give are miniscule to you)
+              </label>
+            </div>
+
+          </div>
+
+        </div>
+      </fieldset>
+
+      <div class="form-group row">
+        <div id="staticSegment" class="col-5 hidable hidden">
+          <label for="modEntry">Static Modifier:</label>
+          <input type="number" class="form-control" id="modEntry" name="modEntry" value='0' >
+        </div>
+        <div id="variableSegment" class="col-5 hidable hidden">
+          <label for="variableToHit">Variable To-Hit:</label>
+          <input  title="[amount of die]d[size of die] (note that white spaces are not allowed but 'amount of die' can be a negative number)" pattern="-?\d+[d]\d+" class="form-control toggleTab" name="variableToHit" id="variableToHit" rows="1" placeholder="2d4" tabIndex="-1"></input>
+        </div>
+      </div>
+
+      <div id="hiddenForm" class="hidden hidable">
+        <hr>
+        <span class="formTitle">Damage:</span>
+      <div class="form-group row" id="Damage">
+        <div class="col-5">
+          <label for="damDiceEntry">Damage Dice</label>
+          <input type="text" pattern="-?\d+[d]\d+" class="form-control toggleTab" name="damDiceEntry" id="damDiceEntry" rows="1" placeholder="2d6" tabIndex="-1"></input>
+        </div>
+
+        <div class="col-5">
+          <label for="damStaticEntry">Static Damage</label>
+          <input type="number" class="form-control toggleTab" name="damStaticEntry" id="damStaticEntry" rows="1" value="0" tabIndex="-1"></input>
+        </div>
+      </div>
+        <hr>
+        <span class="formTitle">Bonus/Penalty Types:</span>
+      <div class="form-group row formtip" id="effectTyping">
+        <span class="formtipText">Here you can declare what 'type' of bonus to hit, damage, or stats your gem is giving you.
+          Note that only Untyped or Circumstance bonuses will stack with eachother.  If, for example, you have a +3 enhancement bonus to hit
+          from one gem and a +5 enhancement bonus to hit from another gem only the highest bonus (+5 in this case) will be applied.</span>
+        <div class="col-3">
+          <label for="staticTypeEntry">To-hit mod type:</label>
+            <select name="staticType" class="form-control" id="staticTypeEntry">
+              <option selected>Untyped</option>
+              <option>Alchemical</option>
+              <option>Competence</option>
+              <option>Circumstance</option>
+              <option>Enhancement</option>
+              <option>Insight</option>
+              <option>Luck</option>
+              <option>Morale</option>
+              <option>Profane</option>
+              <option>Sacred</option>
+              <option>Size</option>
+            </select>
+        </div>
+
+        <div class="col-3">
+          <label for="statTypeEntry">Ability Score mod type:</label>
+            <select name="ablScoreType" class="form-control" id="statTypeEntry">
+              <option selected>Untyped</option>
+              <option>Alchemical</option>
+              <option>Circumstance</option>
+              <option>Enhancement</option>
+              <option>Luck</option>
+              <option>Morale</option>
+              <option>Profane</option>
+              <option>Sacred</option>
+              <option>Size</option>
+            </select>
+        </div>
+
+        <div class="col-3">
+          <label for="damTypeEntry">Damage modifier type:</label>
+            <select name="dmgType" class="form-control" id="damTypeEntry">
+              <option selected>Untyped</option>
+              <option>Alchemical</option>
+              <option>Competence</option>
+              <option>Circumstance</option>
+              <option>Enhancement</option>
+              <option>Insight</option>
+              <option>Luck</option>
+              <option>Morale</option>
+              <option>Profane</option>
+              <option>Sacred</option>
+              <option>Size</option>
+            </select>
+        </div>
+
+      </div>
+        <hr>
+        <span class="formTitle">Ability Score Changes:</span>
+      <div class="form-group row formtip" id="StatChanges">
+        <span class="formtipText">Some bonuses don't directly affect your to-hit or damage, instead they'll make your character smarter or more muscly.  Input any CHANGES the gem makes to your stats here (so if wearing that belt gives you a +4 bonus to strength put '4' into the Strength section here).</span>
+        <div class="col-5">
+
+          <label for="strChangeEntry">Strength +/-</label>
+          <input type="number" name="strChangeEntry" class="form-control toggleTab" id="strChangeEntry" rows="1" value="0" tabIndex="-1"></input>
+
+          <label for="dexChangeEntry">Dexterity +/-</label>
+          <input type="number" name="dexChangeEntry" class="form-control toggleTab" id="dexChangeEntry" rows="1" value="0" tabIndex="-1"></input>
+
+          <label for="conChangeEntry">Constitution +/-</label>
+          <input type="number" name="conChangeEntry" class="form-control toggleTab" id="conChangeEntry" rows="1" value="0" tabIndex="-1"></input>
+
+        </div>
+
+        <div class="col-5">
+
+          <label for="intChangeEntry">Intelligence +/-</label>
+          <input type="number" name="intChangeEntry" class="form-control toggleTab" id="intChangeEntry" rows="1" value="0" tabIndex="-1"></input>
+
+          <label for="wisChangeEntry">Wisdom +/-</label>
+          <input type="number" name="wisChangeEntry" class="form-control toggleTab" id="wisChangeEntry" rows="1" value="0" tabIndex="-1"></input>
+
+          <label for="chaChangeEntry">Charisma +/-</label>
+          <input type="number" name="chaChangeEntry" class="form-control toggleTab" id="chaChangeEntry" rows="1" value="0" tabIndex="-1"></input>
+
+        </div>
+      </div>
+
+        <hr>
+        <span class="formTitle">Additional Notes:</span>
+        <div class="form-group row" id="Description">
+          <div class="col-10 formtip">
+            <span class="formtipText">If you write a description for your gem you'll be able to see it when you hover over it later, making it also good if you want to note any misc. effects such as haste which gives you some bonuses to saves and extra movement as well as that +1 to-hit.</span>
+            <label for="descriptionEntry">Description</label>
+            <textarea class="form-control toggleTab" id="descriptionEntry" name="descriptionEntry" rows="2" placeholder="A dazzled creature takes a –1 penalty on attack rolls and sight-based Perception checks." tabIndex="-1"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row hidable hidden" id="conTriggerSegment">
+        <div class="col-10 formtip">
+          <span class="formtipText">An entry unique to conditionals.  If the gem has a specific trigger you can write yourself a reminder of what that is here.</span>
+          <label for="triggerEntry">Triggering Condition</label>
+          <textarea class="form-control toggleTab" id="triggerEntry" name="triggerEntry" rows="1" placeholder="If the target is an Orc" tabIndex="-1"></textarea>
+        </div>
+      </div>
+
+      </div>
+
+
+
+    <div class="form-group row" id="showGemOptions">
+      <div class="col-sm-4">
+        <hr>
+      </div>
+      <div class ="col-sm-1">Show</div>
+      <div class="col-sm-1 flipped" id="gemDropdown">
+        <div>&#xb83;</div>
+      </div>
+      <div class ="col-sm-1" id="moreOrLess">More</div>
+      <div class="col-sm-4">
+        <hr>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <button class="button" type="submit">Submit Gem</button>
+        <button id="exitGemFormButton" type="button" class="buttonNegative">Exit Gem Creator</button>
+
+      </div>
+    </div>
+  </form>
+ </div>
+</div>
+
+<!-- end of overlay code -->
+
+
+</body>
