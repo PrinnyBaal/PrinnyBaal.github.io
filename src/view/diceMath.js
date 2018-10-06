@@ -136,6 +136,7 @@ function setHovers(){
   $(".tooltipOverlay").addClass("hiddenInfo");
   $( "#gemTray" ).on("mouseenter mouseleave", ".imageShadow", tooltipHover);
   $( "#lapidary" ).on("mouseenter mouseleave", ".imageShadow", tooltipHover);
+  $( "#trashTray" ).on("mouseenter mouseleave", ".imageShadow", tooltipHover);
   $(".ribbonBtn").hover(ribbonHover);
 }
 
