@@ -459,7 +459,7 @@ function displayMod(){
     for (x in conEffects){
       if (!gemEffects[x]){
         gemEffects[x]=conEffects[x];
-        
+
       }
     }
   }
@@ -1675,11 +1675,6 @@ function chooseNewAvatar(event){
 }
 function artEntry(){
   let artSubmission=$("#artEntryForm").serializeArray()[0].value;
-  $("#playerChosenArt").on( "error", function(){
-    //TODO change the higgs art to an error message image
-    $(this).attr( "src", "https://res.cloudinary.com/metaverse/image/upload/v1537211381/DiceTray/UI%20Icons/icons8-broken-link-50.png" );
-  } );
-
   $('#playerChosenArt').attr("src", artSubmission);
   localStorage.setItem("customAvatar", JSON.stringify(artSubmission));
 
