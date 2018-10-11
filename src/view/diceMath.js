@@ -21,7 +21,11 @@ diceProj.view.diceMath = {
     }
 };
 
-
+// animation functions
+// -------------------------------
+function pendingConditionals(){
+  $("#submitConditionals").addClass("shimmering");
+}
 
 //functions that change game variables whenever chosen attack is changed
   //-----------------------------------------------------------------
@@ -386,6 +390,7 @@ function trayNameChange(event){
 //--------------------------------------------------------------------------------
 
 function displayMod(){
+  $("#submitConditionals").removeClass("shimmering");
   let chosen=JSON.parse(localStorage.getItem("selectedAttack"));
   let atkList=JSON.parse(localStorage.getItem("atkList"));
   let chosenObject= findObjectByID(chosen, atkList);
@@ -640,6 +645,7 @@ function getGemMods(){
 }
 
 function displayConditionals() {
+  $("#updateConditionalsBtn").removeClass("shimmering");
   savePositions();
   displayMod();
   let occupied;
@@ -821,6 +827,7 @@ function displayMiscMod(){
   $("#currMisc").html(miscMod);
 }
 function changeMiscMod(event){
+  $("#updateConditionalsBtn").addClass("shimmering");
   let miscMod=parseInt(JSON.parse(localStorage.getItem("miscMod")));
   miscMod+=event.data.modShift;
 
@@ -875,22 +882,47 @@ function getRoll(){
              gemEffects[x]["statChanges"][y]+=conEffects[x]["statChanges"][y];
             }
           }
-          if (x!="Circumstance" && x!="Untyped"){
-            if(gemEffects[x]["staticAtk"]<conEffects[x]["staticAtk"]){
-              gemEffects[x]["staticAtk"]=conEffects[x]["staticAtk"];
-            }
-            if(gemEffects[x]["staticDam"]<conEffects[x]["staticDam"]){
-              gemEffects[x]["staticDam"]=conEffects[x]["staticDam"];
-            }
-            for (y in gemEffects[x]["statChanges"]){
-              if (gemEffects[x]["statChanges"][y]<conEffects[x]["statChanges"][y]){
-                gemEffects[x]["statChanges"][y]=conEffects[x]["statChanges"][y];
+            if (x!="Circumstance" && x!="Untyped"){
+                      if (conEffects[x]){
+                        if(gemEffects[x]["staticAtk"]<conEffects[x]["staticAtk"]){
+                          gemEffects[x]["staticAtk"]=conEffects[x]["staticAtk"];
+                        }
+
+                        if(gemEffects[x]["staticDam"]<conEffects[x]["staticDam"]){
+                          gemEffects[x]["staticDam"]=conEffects[x]["staticDam"];
+                        }
+                        for (y in gemEffects[x]["statChanges"]){
+                          if (gemEffects[x]["statChanges"][y]<conEffects[x]["statChanges"][y]){
+                            gemEffects[x]["statChanges"][y]=conEffects[x]["statChanges"][y];
+                          }
+                        }
+                      }
+                    }
+                }
+              }
+              for (x in conEffects){
+                if (!gemEffects[x]){
+                  gemEffects[x]=conEffects[x];
+
+                }
               }
             }
-          }
-      }
-    }
-  }
+    //       if (x!="Circumstance" && x!="Untyped"){
+    //         if(gemEffects[x]["staticAtk"]<conEffects[x]["staticAtk"]){
+    //           gemEffects[x]["staticAtk"]=conEffects[x]["staticAtk"];
+    //         }
+    //         if(gemEffects[x]["staticDam"]<conEffects[x]["staticDam"]){
+    //           gemEffects[x]["staticDam"]=conEffects[x]["staticDam"];
+    //         }
+    //         for (y in gemEffects[x]["statChanges"]){
+    //           if (gemEffects[x]["statChanges"][y]<conEffects[x]["statChanges"][y]){
+    //             gemEffects[x]["statChanges"][y]=conEffects[x]["statChanges"][y];
+    //           }
+    //         }
+    //       }
+    //   }
+    // }
+  // }
 
 
   if (gemEffects){
@@ -1692,7 +1724,7 @@ function charSheetCredits(){
     <div class="col-3" style="font-size:5vw;">Credits:</div>
   </div>
   <hr>
-  Note: artist links open in a new tab.  Art has been resized from the originals to fit their current use.  If you would like to offer your own art for use in this project or would like your art to be removed please contact me at: Ssonson@alumni.nd.edu)
+  Note: artist links open in a new tab.  Art has been resized from the originals to fit their current use.  (If you would like your art to be removed please contact me at: Ssonson@alumni.nd.edu)
 
   <div class="row" id="artTitle">
     <div class="col-3" style="font-size:2vw;">Character Art:</div>
@@ -1896,6 +1928,7 @@ function drop(ev) {
     if(ev.target.nodeName=="DIV"){
       var data = ev.dataTransfer.getData("text/plain");
       ev.target.appendChild(document.getElementById(data));
+      $("#updateConditionalsBtn").addClass("shimmering");
     }
 
 }
