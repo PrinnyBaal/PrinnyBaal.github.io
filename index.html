@@ -17,10 +17,25 @@
 
 <style>
 
-/* https://css-tricks.com/snippets/css/ribbon/ */
+
+
+/* Animations */
+/* ------------------------------ */
+@keyframes shimmer {
+  0%   {bottom:0em;}
+  25% {bottom:.25em;}
+  50%  {background-color: white; background-image: linear-gradient(to bottom, purple, white); bottom:.5em;}
+  75% {bottom:.25em;}
+  100% {bottom:0em;}
+}
+
+.shimmering{
+  animation:shimmer 2s infinite;
+}
 
 /* Character Portrait */
 /* ---------------------------------------------- */
+/* https://css-tricks.com/snippets/css/ribbon/ */
 .ribbon {
  background: #ba89b6;
  color: #fff;
@@ -201,6 +216,8 @@ button:active{
       border-top-color: #1b435e;
       background: #1b435e;
       }
+
+
 /* Section assortment */
 /* ---------------------------------------------- */
 #headingRow{
@@ -665,7 +682,7 @@ button:active{
         <div id="modInfo" class="row mt-4 ml-1" ></div>
         <hr>
         <div id="conditionalInfo" class="row justify-content-center h-50" style=" position:relative;">
-          <form id="targetConditionalForm" class="col-10 offset-1 container-fluid" onsubmit="event.preventDefault(); displayMod();">
+          <form id="targetConditionalForm" class="col-10 offset-1 container-fluid" onchange="pendingConditionals()" onsubmit="event.preventDefault(); displayMod();">
             <div  id="conditionalForm">
             </div>
             <!-- https://stackoverflow.com/questions/11599666/get-the-value-of-checked-checkbox -->
