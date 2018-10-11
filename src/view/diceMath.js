@@ -147,7 +147,6 @@ function ribbonHover(e){
 
 function tooltipHover(e){
   if (e.className="imageShadow"){
-    console.log(e);
   }
   if (e.type=="mouseenter"){
     let gemList=JSON.parse(localStorage.getItem("gemList"));
@@ -155,7 +154,6 @@ function tooltipHover(e){
 
 
       currentGem=findObjectByID(e.target.dataset.heldImg, gemList);
-      console.log(currentGem);
       $("#tooltipName").html(`Name: ${decodeURIComponent(currentGem.name)}`);
       $("#tooltipType").html(`Type: ${currentGem.typeEntries}`);
       $("#tooltipAtk").html(`Atk: ${currentGem.modifier} [${currentGem.variableToHit}]`);
@@ -440,7 +438,8 @@ function displayMod(){
           }
 
           if (x!="Circumstance" && x!="Untyped"){
-
+            console.log(conEffects);
+            console.log(x);
             if(gemEffects[x]["staticAtk"]<conEffects[x]["staticAtk"]){
               gemEffects[x]["staticAtk"]=conEffects[x]["staticAtk"];
             }
@@ -1458,7 +1457,6 @@ function setSelectedAttack(){
 
 function setNewAttack(){
   let atkTemplate=  JSON.parse(localStorage.getItem("atkTemplate"));
-  console.log(atkTemplate);
   setAttackID(atkTemplate);
   charSheetAttacks();
 }
@@ -1490,8 +1488,6 @@ function setAttackID(attack){
   return;
 }
 function deleteAttack(event){
-  // console.log(event);
-  // event.target.id.substr(6)
   let selected=JSON.parse(localStorage.getItem("selectedAttack"));
   let atkList=JSON.parse(localStorage.getItem("atkList"));
   if (this.id.substr(6)==selected){
