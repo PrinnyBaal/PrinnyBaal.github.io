@@ -438,28 +438,22 @@ function displayMod(){
           }
 
           if (x!="Circumstance" && x!="Untyped"){
-            console.log(conEffects);
-            console.log(x);
-            if(gemEffects[x]["staticAtk"]<conEffects[x]["staticAtk"]){
-              gemEffects[x]["staticAtk"]=conEffects[x]["staticAtk"];
-            }
+            if (conEffects[x]){
+              if(gemEffects[x]["staticAtk"]<conEffects[x]["staticAtk"]){
+                gemEffects[x]["staticAtk"]=conEffects[x]["staticAtk"];
+              }
 
-            if(gemEffects[x]["staticDam"]<conEffects[x]["staticDam"]){
-              gemEffects[x]["staticDam"]=conEffects[x]["staticDam"];
-            }
-
-            for (y in gemEffects[x]["statChanges"]){
-              if (gemEffects[x]["statChanges"][y]<conEffects[x]["statChanges"][y]){
-                gemEffects[x]["statChanges"][y]=conEffects[x]["statChanges"][y];
+              if(gemEffects[x]["staticDam"]<conEffects[x]["staticDam"]){
+                gemEffects[x]["staticDam"]=conEffects[x]["staticDam"];
+              }
+              for (y in gemEffects[x]["statChanges"]){
+                if (gemEffects[x]["statChanges"][y]<conEffects[x]["statChanges"][y]){
+                  gemEffects[x]["statChanges"][y]=conEffects[x]["statChanges"][y];
+                }
               }
             }
-
           }
-
-
-
       }
-
     }
   }
 
