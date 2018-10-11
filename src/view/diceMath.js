@@ -401,7 +401,8 @@ function displayMod(){
   modifier+=miscMod;
   gemEffects=getGemMods();
   conEffects=conditionalUpdate();
-
+  console.log(gemEffects);
+  console.log(conEffects);
 
   if (gemEffects && conEffects){
 
