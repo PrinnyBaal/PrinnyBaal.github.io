@@ -456,6 +456,12 @@ function displayMod(){
           }
       }
     }
+    for (x in conEffects){
+      if (!gemEffects[x]){
+        gemEffects[x]=conEffects[x];
+        
+      }
+    }
   }
 
 
