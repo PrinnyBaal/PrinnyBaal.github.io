@@ -16,7 +16,10 @@ diceProj.view.diceMath = {
     displayTraySlots();
     checkChange();
 
-
+    if (!JSON.parse(localStorage.getItem("tutorialSkip"))){
+      console.log("about to run tutorial");
+      runTutorial();
+    }
 
     }
 };
@@ -1910,6 +1913,10 @@ function softReset(){
   checkChange();
 
   setHovers();
+}
+function replayTutorial(){
+  localStorage.setItem("tutorialSkip", false);
+  location.reload();
 }
 
 //These functions allow use to implement drag/drop features
