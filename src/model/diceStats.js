@@ -25,7 +25,7 @@ let playerStats={
   int:10,
   wis:10,
   cha:10,
-  bab:1,
+  bab:0,
 }
 
 let characterName="Sample Name (click me)";
