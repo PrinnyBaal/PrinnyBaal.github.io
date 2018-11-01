@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Stat Tracker</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -142,6 +143,14 @@ button:active{
  .darkWoodBtn{
    background-color:#461F00;
    color:white;
+ }
+ .darkWoodBtn:disabled{
+   background-color:grey;
+   color:black;
+ }
+ .darkWoodBtn:disabled:hover{
+   background-color:grey;
+   color:black;
  }
  .byOneMisc{
    background-color:#8C6546;
@@ -305,6 +314,13 @@ button:active{
 }
 .trayButton:hover{
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, .8)
+}
+.trayButton:disabled:hover{
+  box-shadow: inset 2px 2px 1px rgba(255, 255, 255, .4), inset -2px -2px 1px rgba(0, 0, 0, .4);
+  cursor:default;
+}
+.trayButton:disabled:active{
+  box-shadow: inset 2px 2px 1px rgba(255, 255, 255, .4), inset -2px -2px 1px rgba(0, 0, 0, .4);
 }
 .trayButton:active{
   box-shadow:inset 25px 25px 20px rgba(255, 255, 255, .6);
@@ -713,7 +729,7 @@ button:active{
         </div>
 
         <div  id="dieSlot"  class="row container align-items-center no-gutters">
-          <p>Simulate Results</p>
+          <p>Click to roll dice</p>
           <div id="die" class="col-8 offset-2">
 
             <img  class="pl-4 pt-4" height="80%" width="80%" src="https://res.cloudinary.com/metaverse/image/upload/v1538581612/Backgrounds/No%20Attribution/d20-2699387_640.png">
@@ -816,7 +832,7 @@ button:active{
       </div>
 
 <button id="resetButton" style="background-color:red;">Click to Reset all data</button>
-<button id="tutorialButton" style="background-color:blue; color:white; margin-left:20px;">Replay Tutorial</button>
+<button id="tutorialButton" style="background-color:blue; color:white; margin-left:20px;">Replay Tour</button>
 
 <!--  charOverlay creating code-->
 <div id="charOverlay" class="overlay container-fluid">
