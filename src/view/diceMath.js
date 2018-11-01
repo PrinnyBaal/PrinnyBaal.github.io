@@ -17,7 +17,6 @@ diceProj.view.diceMath = {
     checkChange();
 
     if (!JSON.parse(localStorage.getItem("tutorialSkip"))){
-      console.log("about to run tutorial");
       runTutorial();
     }
 
@@ -1209,7 +1208,7 @@ function displayTrash(){
   var row=0;
 
     //will continue to make rows until there are at LEAST 15, but will continue if there are more gems to set
-  setGrid+=`<button class="buttonNegative btn-block" onclick="incinerateTrash()">Incinerate Trash</button>`
+  setGrid+=`<button class="buttonNegative btn-block" onclick="incinerateTrash()">Incinerate Gems</button>`
   while (row<15){
 
 
@@ -1744,6 +1743,7 @@ function charSheetCredits(){
         <li><img class="charSquare" src="https://res.cloudinary.com/metaverse/image/upload/v1537223687/DiceTray/charArt/guy1.png" style="height:5vw; width:5vw;" alt="Young Gentleman"> Created by: <a href="https://lemmasoft.renai.us/forums/viewtopic.php?f=52&t=25412" rel="noopener noreferrer" target="_blank">Sapiboong</a></li>
         <li><img class="charSquare" src="https://res.cloudinary.com/metaverse/image/upload/v1537223686/DiceTray/charArt/vamp.png" style="height:5vw; width:5vw;" alt="Vamp"> Created by: <a href="https://lemmasoft.renai.us/forums/viewtopic.php?f=52&t=51355&p=493324&hilit=vampire#p493324" rel="noopener noreferrer" target="_blank">Concept by Vicious Viking (Deviantart). Emotions by Aimyraude (Cloudnovel/Discord).</a></li>
         <li><img class="charSquare" src="https://res.cloudinary.com/metaverse/image/upload/v1537213424/DiceTray/charArt/cellonyPortrait.png" style="height:5vw; width:5vw;" alt="Celleny"> Created by: <a href="https://lemmasoft.renai.us/forums/viewtopic.php?f=52&t=46270" rel="noopener noreferrer" target="_blank">Succuren</a></li>
+        <li><img class="charSquare" src="https://res.cloudinary.com/metaverse/image/upload/v1541010546/Avatars/Higgsy/side_higgsLaugh.png" style="height:5vw; width:5vw;" alt="Higgsy"> Created by: <a href="https://lemmasoft.renai.us/forums/viewtopic.php?f=52&t=48688&p=480951&hilit=female+sprite#p480951" rel="noopener noreferrer" target="_blank">GrammaHobbes</a></li>
       </ul>
     </div>
 
@@ -1791,6 +1791,7 @@ function charSheetCredits(){
 
   <div class="row pl-4" id="otherCredits">
     <p>
+
       All unlisted backgrounds are taken from the subtle patterns collection at: <a href="https://www.toptal.com/designers/subtlepatterns/" rel="noopener noreferrer" target="_blank">Toptal</a>
       <br ><br />
       This sheet is intended as a general gaming tool with the ability to mimic most any d20 system and still be useful for other systems(the dice-roller is fairly d20 specific.)
@@ -1798,7 +1799,7 @@ function charSheetCredits(){
 
       That being said, I personally made this to help me play Pathfinder.  This site isn't endorsed by Pathfinder in any way but a lot of the testing I did and the corner cases I checked were pretty Pathfinder specific.  Some features (such as being able to label buffs as being circumstance, enhancement, etc.) are, while not useless in other systems, better suited for Pathfinder.  In any case, just to be on the safe side in case a game term I used isn't an industry standard term and instead part of Paizo's copyright: <br /><br />
 
-      "This website uses trademarks and/or copyrights owned by Paizo Inc., which are used under Paizo's Community Use Policy. We are expressly prohibited from charging you to use or access this content. This [website, character sheet, or whatever it is] is not published, endorsed, or specifically approved by Paizo Inc. For more information about Paizo's Community Use Policy, please visit paizo.com/communityuse. For more information about Paizo Inc. and Paizo products, please visit paizo.com."
+      "This website uses trademarks and/or copyrights owned by Paizo Inc., which are used under Paizo's Community Use Policy. We are expressly prohibited from charging you to use or access this content. This website is not published, endorsed, or specifically approved by Paizo Inc. For more information about Paizo's Community Use Policy, please visit paizo.com/communityuse. For more information about Paizo Inc. and Paizo products, please visit paizo.com."
     </p>
   </div>`;
 
@@ -1888,6 +1889,7 @@ function setClicks(){
   $("#titleBanner").click(bannerShortCut);
   $("#charPortrait").click(getCharSheet);
   $("#resetButton").click(resetStorage);
+  $("#tutorialButton").click(replayTutorial);
   $("#saveGemsButton").click(savePositions);
 
   $("#artPageButton").click(charSheetAesthetics);
